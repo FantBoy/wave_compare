@@ -49,7 +49,7 @@ def drow_fig(name, framesra, frameswav, datauses):
 
 if __name__ == '__main__':
 
-    filepath = 'E:\programes\github\WaveCompare\wavs\ysw03.wav'
+    filepath = 'E:\programes\github\wave_compare\wavs\ysw03.wav'
     wave_useful_data = Wave_USEFUL_DATA(filepath)
     datas = []
     datas.append({'key': 'Raw Spectrum', 'value': wave_useful_data.datause})
@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     drow_fig('stand_wave-' + filepath, wave_useful_data.framesra, wave_useful_data.frameswav, datas)
 
-    filepath = 'E:\programes\github\WaveCompare\wavs\\ckj.wav'
+    filepath = 'E:\programes\github\wave_compare\wavs\\ckj.wav'
     cop_wave_useful_data = Wave_USEFUL_DATA(filepath)
     datas = []
     datas.append({'key': 'Raw Spectrum', 'value': cop_wave_useful_data.datause})
