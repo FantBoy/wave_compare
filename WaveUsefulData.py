@@ -10,6 +10,7 @@ import math
 import wave
 import numpy as np
 
+#TODO 有效数据阈值待优化调整
 DATA_START_VALUE = 0.025
 DATA_END_VALUE = 0.025
 
@@ -27,13 +28,22 @@ class Wave_USEFUL_DATA(object):
         return len(self.datause)
 
     def get_normalization_data(self):
-        # 归一化
+        """
+            归一化
+
+        :return:
+        """
         max_index = np.argmax(self.datause)
         self.datause = self.datause / (1.0 * self.datause[max_index])
 
     def get_wave_filtering(self):
-        # 滤波
-        # y(n) = 1.0*x(n)+(-0.9375)*x(n-1)  滤波
+        """
+            求滤波
+            y(n) = 1.0*x(n)+(-0.9375)*x(n-1)
+
+        :return:
+        """
+        #TODO 公式原理待验证，优化
         datause_n_2_list = [0.00] + list(self.datause[:-1])
         datause_n_2 = np.array(datause_n_2_list)
 
@@ -42,17 +52,29 @@ class Wave_USEFUL_DATA(object):
 
     @staticmethod
     def get_generate_hamming_windows(row, column):
-        # hamming窗
+        """
+            创建hammin窗口
+
+        :param row:
+        :param column:
+        :return:
+        """
+
         hammin_windows = [0] * row * column
         for index in range(row * column):
             hammin_windows[index] = 0.54 - 0.46 * (math.cos(2 * math.pi * index / (row * column)))
         return np.array(hammin_windows)
 
     def get_short_time_energy(self):
-        # 短时能量波形
+        """
+            获取短时能量数据
+
+        :return:
+        """
+
         # 电乘
         self.datause = self.datause * self.datause
-        # hamming窗
+        # hammin窗口
         hammin_windows = self.get_generate_hamming_windows(32, 16)
         # 卷积
         self.datause = np.convolve(self.datause, hammin_windows, 'full')
@@ -60,7 +82,8 @@ class Wave_USEFUL_DATA(object):
 
     def get_data_start_index(self):
         """
-        通过阈值得到音频有效数据开始的下标
+            去除音频起始静音片段
+
         :param datause:
         :return:
         """
@@ -71,7 +94,8 @@ class Wave_USEFUL_DATA(object):
 
     def get_data_end_index(self):
         """
-        通过阈值得到音频有效数据结束的下标
+            去除音频末尾静音片段
+
         :param datause:
         :return:
         """
@@ -81,19 +105,24 @@ class Wave_USEFUL_DATA(object):
         return -1
 
     def get_useful_short_time_energy(self):
-        # 有效的短时能量波形
+        """
+            去除首尾的静音片段
+
+        :return:
+        """
         start_index = self.get_data_start_index()
         end_index = self.get_data_end_index()
         self.datause = np.array(list(self.datause)[start_index:end_index])
 
     def get_compare_useful_short_time_energy(self, stand_length):
         """
-        处理对比音频使其与标准音频长度相同
-        通过阈值获得的数据开始下标截取与标准音频相同长度的音频数据
+            获取对比音频的有效能量数据，保持对比音频有效长度跟原始音频长度一致
+            若不够，则用[0]填充末尾，方便做余弦距离（[0]不影响计算结果）
+
         :param stand_length:
         :return:
         """
-        # 对比音频的有效短时能量波形
+
         start_index = self.get_data_start_index()
         end_index = start_index + stand_length
         if end_index <= len(self.datause):
@@ -103,6 +132,12 @@ class Wave_USEFUL_DATA(object):
             self.datause = np.array(list(self.datause)[start_index:] + zero_arr)
 
     def get_compare_score(self, compare_useful_data):
+        """
+            计算余弦距离
+        :param compare_useful_data:
+        :return:
+        """
+
         dot = (self.datause * compare_useful_data).sum()
         normStandard = (self.datause * self.datause).sum()
         normCompare = (compare_useful_data * compare_useful_data).sum()
