@@ -19,6 +19,13 @@ class Wave_USEFUL_DATA(object):
     def __init__(self, filepath):
         wave_file = wave.open(filepath, 'rb')
         params = wave_file.getparams()
+        """
+            nchannels, sampwidth, framerate, nframes = params[:4]
+            nchannels:声道数
+            sampwidth:量化位数（byte）
+            framerate:采样频率
+            nframes:采样点数
+        """
         self.framesra = params[2]
         self.frameswav = params[3]
         wave_data = wave_file.readframes(self.frameswav)
