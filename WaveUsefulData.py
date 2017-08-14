@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 import math
 import wave
 import numpy as np
+from scipy import signal
 
 #TODO 有效数据阈值待优化调整
 DATA_START_VALUE = 0.025
@@ -29,8 +30,11 @@ class Wave_USEFUL_DATA(object):
         self.framesra = params[2]
         self.frameswav = params[3]
         wave_data = wave_file.readframes(self.frameswav)
-        self.datause = np.fromstring(wave_data, dtype = np.short)
+        self.datause = np.fromstring(wave_data, dtype = np.short) #16位，-32767~32767
 
+        #按照通道数分开处理
+        # waveData = np.reshape(waveData, [nframes, nchannels])
+        # waveData[:, 0], waveData[:, 1],....waveData[:, nchannels]
     def get_data_length(self):
         return len(self.datause)
 
@@ -40,8 +44,9 @@ class Wave_USEFUL_DATA(object):
 
         :return:
         """
-        max_index = np.argmax(self.datause)
-        self.datause = self.datause / (1.0 * self.datause[max_index])
+        max_index = np.argmax(abs(self.datause))
+        max_value = abs(self.datause[max_index])
+        self.datause = self.datause / (1.0 * max_value)
 
     def get_wave_filtering(self):
         """
@@ -56,6 +61,10 @@ class Wave_USEFUL_DATA(object):
 
         self.datause = self.datause * 1.0 + (-0.9375) * datause_n_2
         self.get_normalization_data()
+
+        #使用signal做低通滤波
+        # b, a = signal.butter(1, 0.9375, 'low')
+        # self.datause = signal.filtfilt(b, a, self.datause)
 
     @staticmethod
     def get_generate_hamming_windows(row, column):

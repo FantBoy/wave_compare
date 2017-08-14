@@ -93,7 +93,7 @@ if __name__ == '__main__':
     # files.append(('wavs\houyi\houyi_move_2.wav', 'tools\wavetemp\houyi_move_2_yy.wav'))
     # files.append(('wavs\houyi\houyi_move_4.wav', 'tools\wavetemp\houyi_move_4_yy.wav'))
 
-    files.append(('wavs\ysw03.wav', 'wavs\ysw03.wav'))
+    files.append(('wavs\ysw03.wav', 'wavs\\t2.wav'))
 
     for (stand_filepath, com_filepath) in files:
         do_match(stand_filepath, com_filepath)
