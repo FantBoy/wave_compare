@@ -1,22 +1,15 @@
-#!/usr/bin/env python
+
 # -*- coding: utf-8 -*-
-# @CreateDate : 2017/8/1 0:00
-# @Author     : Bearboyxu
-# @FileName   : test.py
-# @Software   : PyCharm
-
-
-from WaveUsefulData import Wave_USEFUL_DATA
+import scipy.signal as signal
 import numpy as np
-import matplotlib.pyplot as plt
+import pylab as pl
 
-filepath = 'E:\programes\github\wave_compare\wavs\ysw03.wav'
-wave_useful_data = Wave_USEFUL_DATA(filepath)
-
-hammin_windows = wave_useful_data.get_generate_hamming_windows(32, 16)
-x = np.arange(0, len(hammin_windows), 1)
-fig = plt.figure()
-# time = np.arange(0, len(datause_dict['value']), 1) * (1.0 / framesra)
-ax1 = fig.add_subplot(1, 1 , 1)
-ax1.plot(x, hammin_windows, color = 'red')
-plt.show()
+for length in [11, 31, 51, 101, 201]:
+    b = signal.remez(length, (0, 0.18,  0.2,  0.50), (0.01, 1))
+    w, h = signal.freqz(b, 1)
+    pl.plot(w/2/np.pi, 20*np.log10(np.abs(h)), label=str(length))
+pl.legend()
+pl.xlabel(u"正规化频率 周期/取样")
+pl.ylabel(u"幅值(dB)")
+pl.title(u"remez设计高通滤波器 - 滤波器长度和频响的关系")
+pl.show()
