@@ -1,50 +1,47 @@
+
 # -*- coding: utf-8 -*-
+# @CreateDate : 2017/7/29 22:22
+# @Author     : Bearboyxu
+# @FileName   : main.py
+# @Software   : PyCharm
 
-
-from scipy import signal
-import numpy as np
-import matplotlib.pyplot as pl
-import matplotlib
+from __future__ import unicode_literals
+import os
+import struct
 import math
+import wave as we
+import numpy as np
+import pylab as pl
+import matplotlib.pyplot as plt
+from collections import defaultdict
+from WaveUsefulData import Wave_USEFUL_DATA
 
-N = 500
-fs = 5
-n = [2 * math.pi * fs * t / N for t in range(N)]
-axis_x = np.linspace(0, 1, num=N)
-# 设置字体文件，否则不能显示中文
-myfont = matplotlib.font_manager.FontProperties(fname='c:\\windows\\fonts\\fzshjw_0.ttf')
 
-fig = pl.figure('sds',figsize=(15,8), frameon = False )
-ax1 = fig.add_subplot(5, 2, 1)
-# 频率为5Hz的正弦信号
-x = [math.sin(i) for i in n]
-# pl.subplot(221)
-ax1.plot(axis_x, x)
-ax1.set_title(u'5Hz的正弦信号', fontproperties=myfont)
-# ax1.set_axis('tight')
+class TestgDemo(object):
+    urls = []
+    # self.urls = []
+    def add_urls(self, url):
+        self.urls.append(url)
 
-xx = []
-x1 = [math.sin(i * 10) for i in n]
-for i in range(len(x)):
-    xx.append(x[i] + x1[i])
+demo1 = TestgDemo()
+demo1.add_urls('www.ximalaya.com')
+print demo1.urls
 
-pl.subplot(222)
-pl.plot(axis_x, xx)
-pl.title(u'5Hz与50Hz的正弦叠加信号', fontproperties=myfont)
-pl.axis('tight')
+demo2 = TestgDemo()
+demo2.add_urls('www.qingting.com')
+print demo2.urls
 
-b, a = signal.butter(3, 0.08, 'low')
-sf = signal.filtfilt(b, a, xx)
 
-pl.subplot(223)
-pl.plot(axis_x, sf)
-pl.title(u'低通滤波后', fontproperties=myfont)
-pl.axis('tight')
 
-b, a = signal.butter(3, 0.10, 'high')
-sf = signal.filtfilt(b, a, xx)
+a = {'1': 'qwe', '2': 'ewq'}
+b = a
+# b=a.copy()
+b['add'] = '354'
+print a
 
-pl.subplot(224)
-pl.plot(axis_x, sf)
-pl.title(u'高通滤波后', fontproperties=myfont)
-pl.axis('tight')
+
+aa = [1,2,3,4,5]
+# bb = aa
+bb = aa[:]
+bb.append(34)
+print aa

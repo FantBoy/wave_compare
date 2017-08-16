@@ -78,8 +78,11 @@ class Wave_USEFUL_DATA(object):
 
         hammin_windows = [0] * row * column
         for index in range(row * column):
-            hammin_windows[index] = 0.54 - 0.46 * (math.cos(2 * math.pi * index / (row * column)))
+            hammin_windows[index] = 0.54 - 0.46 * (math.cos(2 * math.pi * index / (row * column - 1)))
         return np.array(hammin_windows)
+
+        # 也可直接使用numpy的hamming方法直接获取窗口函数
+        # hammin_windows = np.hamming(32 * 16)
 
     def get_short_time_energy(self):
         """
@@ -88,13 +91,13 @@ class Wave_USEFUL_DATA(object):
         :return:
         """
 
-        # 电乘
+        # 点乘
         self.datause = self.datause * self.datause
         # hammin窗口
         hammin_windows = self.get_generate_hamming_windows(32, 16)
         # 卷积
         self.datause = np.convolve(self.datause, hammin_windows, 'full')
-        self.get_normalization_data()
+        self.get_normalization_data() # 对结果做归一化处理
 
     def get_data_start_index(self):
         """
