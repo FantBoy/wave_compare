@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # encoding: utf-8
 
 
@@ -37,7 +37,7 @@ class EncodeAudioToWav(object):
             if os.path.exists(dis_filepath):
                 os.remove(dis_filepath)
             exec_file = os.path.join(settings.BASE_DIR, 'Audio_Compare_app/audio_rating/tool/ffmpeg')
-            param = (exec_file, '-y', '-i', local_filepath, '-ar', '44100', '-ac', '1', '-acodec', 'pcm_s16le', dis_filepath)
+            param = (exec_file, '-y', '-i', local_filepath, '-ar', '44100', '-ac', '2', '-acodec', 'pcm_s16le', dis_filepath)
             pipe = subprocess.Popen(param, close_fds=True)
             pipe.wait()
             if 0 != pipe.returncode:
@@ -46,3 +46,6 @@ class EncodeAudioToWav(object):
             return 0
         except Exception as e:
             raise DecodeFileToWavException(local_filepath, traceback.format_exc())
+
+tool = EncodeAudioToWav()
+tool.DoEncode('wavs\QZ96qz7807b42f2244da.m4a', 'wavs\QZ96qz7807b42f2244da.wav')
