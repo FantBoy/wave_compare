@@ -62,7 +62,7 @@ class Wave_USEFUL_DATA(object):
         self.datause = self.datause * 1.0 + (-0.9375) * datause_n_2
         self.get_normalization_data()
 
-        #使用signal做低通滤波
+        #使用signal做高通滤波
         # b, a = signal.butter(1, 0.9375, 'low')
         # self.datause = signal.filtfilt(b, a, self.datause)
 

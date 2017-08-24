@@ -21,7 +21,6 @@ FIG_COR = ['green', 'green', 'blue', 'red' , 'purple', '']
 def drow_fig(name, framesra, frameswav, stand_datauses, com_datauses, score):
     fig = plt.figure(name,figsize=(15,8), frameon = False )
     for index in range(len(stand_datauses)):
-        index = 4
         datause_dict = stand_datauses[index]
         time = np.arange(0, len(datause_dict['value']), 1)
         ax1 = fig.add_subplot(5, 2, index * 2 + 1)
@@ -43,7 +42,6 @@ def drow_fig(name, framesra, frameswav, stand_datauses, com_datauses, score):
         ax1.plot(time, datause_dict['value'], color=FIG_COR[index])
         ax1.set_title(datause_dict['key'])
         # ax1.set_xticks([])
-        break
     # ax1.text(0.75 * time[-1], 0.5, str(score), fontsize = 15, verticalalignment = "bottom", horizontalalignment = "left")
     ax1.set_xlabel('SCORE: ' + str(score), fontsize = 15, horizontalalignment = "right")
 
@@ -94,7 +92,7 @@ if __name__ == '__main__':
     # files.append(('wavs\houyi\houyi_move_2.wav', 'tools\wavetemp\houyi_move_2_yy.wav'))
     # files.append(('wavs\houyi\houyi_move_4.wav', 'tools\wavetemp\houyi_move_4_yy.wav'))
 
-    files.append(('wavs\daji_hall_1.wav', 'wavs\daji_hall_1_xuchao.wav'))
+    files.append(('wavs\ysw08.wav', 'wavs\BQ9671549003951271_temp.wav'))
 
     for (stand_filepath, com_filepath) in files:
         do_match(stand_filepath, com_filepath)
